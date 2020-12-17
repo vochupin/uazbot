@@ -13,7 +13,7 @@ public class App {
     private static final int PRIORITY_FOR_RECEIVER = 3;
     private static final String BOT_ADMIN = "";
 
-    public static void main(String[] args) {
+    public static void mmmain(String[] args) {
         ApiContextInitializer.init();
         Bot test_habr_bot = new Bot("uazchatbot", "");
 
