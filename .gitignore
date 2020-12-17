@@ -30,4 +30,4 @@ classes/
 hs_err_pid*
 
 #credentials config
-credential.properties
+/src/main/resources/credentials.properties

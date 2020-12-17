@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.uazbot.restservice;
 
 public class Greeting {
 
