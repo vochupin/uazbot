@@ -4,7 +4,6 @@ import com.uazbot.bot.Bot;
 import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.command.Parser;
-import com.example.telegrambot.handler.*;
 import com.uazbot.handler.*;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;

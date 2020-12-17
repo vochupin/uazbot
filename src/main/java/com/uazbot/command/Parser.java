@@ -19,7 +19,7 @@ public class Parser {
     public ParsedCommand getParsedCommand(String text) {
         String trimText = "";
         if (text != null) trimText = text.trim();
-        ParsedCommand result = new ParsedCommand();
+        ParsedCommand result = new ParsedCommand(Command.NONE, trimText);
 
         if ("".equals(trimText)) return result;
         Pair<String, String> commandAndText = getDelimitedCommandFromText(trimText);
@@ -27,17 +27,17 @@ public class Parser {
             if (isCommandForMe(commandAndText.getKey())) {
                 String commandForParse = cutCommandFromFullText(commandAndText.getKey());
                 Command commandFromText = getCommandFromText(commandForParse);
-                result.text = commandAndText.getValue();
-                result.command = commandFromText;
+                result.setText(commandAndText.getValue());
+                result.setCommand(commandFromText);
             } else {
-                result.command =Command.NOTFORME;
-                result.text = commandAndText.getValue();
+                result.setCommand(Command.NOTFORME);
+                result.setText(commandAndText.getValue());
             }
 
         }
-        if (result.command == Command.NONE) {
-            List<String> emojiContainsInText = EmojiParser.extractEmojis(result.text);
-            if (emojiContainsInText.size() > 0) result.command = Command.TEXT_CONTAIN_EMOJI;
+        if (result.getCommand() == Command.NONE) {
+            List<String> emojiContainsInText = EmojiParser.extractEmojis(result.getText());
+            if (emojiContainsInText.size() > 0) result.setCommand(Command.TEXT_CONTAIN_EMOJI);
         }
         return result;
     }
