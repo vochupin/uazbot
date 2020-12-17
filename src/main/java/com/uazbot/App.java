@@ -11,11 +11,11 @@ public class App {
     private static final Logger log = Logger.getLogger(App.class);
     private static final int PRIORITY_FOR_SENDER = 1;
     private static final int PRIORITY_FOR_RECEIVER = 3;
-    private static final String BOT_ADMIN = "321644283";
+    private static final String BOT_ADMIN = "";
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
-        Bot test_habr_bot = new Bot("test_habr_bot", "1012522162:AAFZrajCVyKvPIQgTUMilj8l1P3ucjSAw8w");
+        Bot test_habr_bot = new Bot("uazchatbot", "");
 
         MessageReciever messageReciever = new MessageReciever(test_habr_bot);
         MessageSender messageSender = new MessageSender(test_habr_bot);
