@@ -35,12 +35,12 @@ public class RestServiceApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         ApiContextInitializer.init();
-        Bot test_habr_bot = new Bot("uazchatbot", appConfig.getBotToken());
+        Bot uazBot = new Bot("uazchatbot", appConfig.getBotToken());
 
-        MessageReciever messageReciever = new MessageReciever(test_habr_bot);
-        MessageSender messageSender = new MessageSender(test_habr_bot);
+        MessageReciever messageReciever = new MessageReciever(uazBot);
+        MessageSender messageSender = new MessageSender(uazBot);
 
-        test_habr_bot.botConnect();
+        uazBot.botConnect();
 
         Thread receiver = new Thread(messageReciever);
         receiver.setDaemon(true);
@@ -54,7 +54,7 @@ public class RestServiceApplication {
         sender.setPriority(PRIORITY_FOR_SENDER);
         sender.start();
 
-        sendStartReport(test_habr_bot);
+        sendStartReport(uazBot);
     }
 
     private void sendStartReport(Bot bot) {
