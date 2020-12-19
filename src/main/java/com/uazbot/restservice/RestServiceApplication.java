@@ -13,8 +13,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.uazbot"})
@@ -34,7 +33,6 @@ public class RestServiceApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
-        ApiContextInitializer.init();
         Bot uazBot = new Bot("uazchatbot", appConfig.getBotToken());
 
         MessageReciever messageReciever = new MessageReciever(uazBot);

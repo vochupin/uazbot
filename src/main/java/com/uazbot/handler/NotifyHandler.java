@@ -4,7 +4,7 @@ import com.uazbot.ability.Notify;
 import com.uazbot.bot.Bot;
 import com.uazbot.command.ParsedCommand;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class NotifyHandler extends AbstractHandler {
     private static final Logger log = Logger.getLogger(NotifyHandler.class);

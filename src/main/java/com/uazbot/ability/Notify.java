@@ -3,7 +3,7 @@ package com.uazbot.ability;
 import com.uazbot.bot.Bot;
 import lombok.ToString;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @ToString
 public class Notify implements Runnable {

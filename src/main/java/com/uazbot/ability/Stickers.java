@@ -1,6 +1,7 @@
 package com.uazbot.ability;
 
-import org.telegram.telegrambots.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 
 public enum Stickers {
     FUNNY_JIM_CARREY("CAADBQADiQMAAukKyAPZH7wCI2BwFxYE"),
@@ -21,7 +22,7 @@ public enum Stickers {
 
     public SendSticker getSendSticker() {
         SendSticker sendSticker = new SendSticker();
-        sendSticker.setSticker(stickerId);
+        sendSticker.setSticker(new InputFile(stickerId));
         return sendSticker;
     }
 }

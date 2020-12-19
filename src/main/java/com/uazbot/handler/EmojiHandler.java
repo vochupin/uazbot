@@ -6,7 +6,7 @@ import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashSet;
 import java.util.Set;

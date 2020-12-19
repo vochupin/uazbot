@@ -2,7 +2,7 @@ package com.uazbot.handler;
 
 import com.uazbot.bot.Bot;
 import com.uazbot.command.ParsedCommand;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public abstract class AbstractHandler {
     Bot bot;

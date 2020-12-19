@@ -2,9 +2,9 @@ package com.uazbot.service;
 
 import com.uazbot.bot.Bot;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.methods.BotApiMethod;
-import org.telegram.telegrambots.api.methods.send.SendSticker;
-import org.telegram.telegrambots.api.objects.Message;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class MessageSender implements Runnable {
     private static final Logger log = Logger.getLogger(MessageSender.class);
@@ -47,7 +47,7 @@ public class MessageSender implements Runnable {
                 case STICKER:
                     SendSticker sendSticker = (SendSticker) object;
                     log.debug("Use SendSticker for " + object);
-                    bot.sendSticker(sendSticker);
+                    bot.execute(sendSticker);
                     break;
                 default:
                     log.warn("Cant detect type of object. " + object);

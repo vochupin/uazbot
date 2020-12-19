@@ -4,8 +4,8 @@ import com.uazbot.bot.Bot;
 import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class SystemHandler extends AbstractHandler {
     private static final Logger log = Logger.getLogger(SystemHandler.class);

@@ -6,11 +6,10 @@ import com.uazbot.command.ParsedCommand;
 import com.uazbot.command.Parser;
 import com.uazbot.handler.*;
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.stickers.Sticker;
-
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 
 public class MessageReciever implements Runnable {
     private static final Logger log = Logger.getLogger(MessageReciever.class);
@@ -68,7 +67,7 @@ public class MessageReciever implements Runnable {
 
         if (!"".equals(operationResult)) {
             SendMessage messageOut = new SendMessage();
-            messageOut.setChatId(chatId);
+            messageOut.setChatId(chatId.toString());
             messageOut.setText(operationResult);
             bot.sendQueue.add(messageOut);
         }
