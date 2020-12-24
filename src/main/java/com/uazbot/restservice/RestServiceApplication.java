@@ -3,6 +3,7 @@ package com.uazbot.restservice;
 import com.uazbot.bot.Bot;
 import com.uazbot.service.MessageReciever;
 import com.uazbot.service.MessageSender;
+import com.uazbot.service.PersonService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +28,9 @@ public class RestServiceApplication {
     @Autowired
     AppConfig appConfig;
 
+    @Autowired
+    PersonService personService;
+
     public static void main(String[] args) {
         SpringApplication.run(RestServiceApplication.class, args);
     }
@@ -34,6 +38,7 @@ public class RestServiceApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         Bot uazBot = new Bot("uazchatbot", appConfig.getBotToken());
+        uazBot.setPersonService(personService);
 
         MessageReciever messageReciever = new MessageReciever(uazBot);
         MessageSender messageSender = new MessageSender(uazBot);

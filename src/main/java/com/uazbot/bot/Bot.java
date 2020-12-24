@@ -1,5 +1,6 @@
 package com.uazbot.bot;
 
+import com.uazbot.service.PersonService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,10 @@ public class Bot extends TelegramLongPollingBot {
 
     public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
     public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
+
+    @Setter
+    @Getter
+    private PersonService personService;
 
     public Bot(String botName, String botToken) {
         this.botName = botName;

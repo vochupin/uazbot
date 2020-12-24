@@ -82,6 +82,8 @@ public class MessageReciever implements Runnable {
             case START:
             case HELP:
             case ID:
+            case REG:
+            case LIST:
             case STICKER:
                 SystemHandler systemHandler = new SystemHandler(bot);
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
