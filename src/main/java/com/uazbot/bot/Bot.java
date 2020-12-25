@@ -1,10 +1,15 @@
 package com.uazbot.bot;
 
+import com.uazbot.restservice.AppConfig;
 import com.uazbot.service.PersonService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,46 +19,43 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@NoArgsConstructor
+@Component
 public class Bot extends TelegramLongPollingBot {
     private static final Logger log = Logger.getLogger(Bot.class);
     private final int RECONNECT_PAUSE = 10000;
 
-    @Setter
-    @Getter
-    private String botName;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
-    @Setter
-    private String botToken;
+    @Autowired
+    AppConfig appConfig;
+
+    @Autowired
+    PersonService personService;
 
     public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
     public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
 
-    @Setter
-    @Getter
-    private PersonService personService;
-
-    public Bot(String botName, String botToken) {
-        this.botName = botName;
-        this.botToken = botToken;
-    }
-
     @Override
     public void onUpdateReceived(Update update) {
+        // Send a message with a POJO - the template reuse the message converter
+        System.out.println("Sending an email message.");
+        jmsTemplate.convertAndSend("updateHandler", update);
+
         log.debug("Receive new Update. updateID: " + update.getUpdateId());
         receiveQueue.add(update);
     }
 
     @Override
     public String getBotUsername() {
-        log.debug("Bot name: " + botName);
-        return botName;
+        log.debug("Bot name: " + appConfig.getBotName());
+        return appConfig.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        log.debug("Bot token: " + botToken);
-        return botToken;
+        log.debug("Bot token: " + appConfig.getBotToken());
+        return appConfig.getBotToken();
     }
 
     public void botConnect() {

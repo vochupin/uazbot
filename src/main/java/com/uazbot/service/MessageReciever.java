@@ -6,21 +6,35 @@ import com.uazbot.command.ParsedCommand;
 import com.uazbot.command.Parser;
 import com.uazbot.handler.*;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 
+@Component
 public class MessageReciever implements Runnable {
     private static final Logger log = Logger.getLogger(MessageReciever.class);
     private final int WAIT_FOR_NEW_MESSAGE_DELAY = 1000;
-    private Bot bot;
-    private Parser parser;
 
-    public MessageReciever(Bot bot) {
-        this.bot = bot;
-        parser = new Parser(bot.getBotName());
-    }
+    @Autowired
+    Bot bot;
+
+    @Autowired
+    Parser parser;
+
+    @Autowired
+    SystemHandler systemHandler;
+
+    @Autowired
+    DefaultHandler defaultHandler;
+
+    @Autowired
+    NotifyHandler notifyHandler;
+
+    @Autowired
+    EmojiHandler emojiHandler;
 
     @Override
     public void run() {
@@ -62,7 +76,7 @@ public class MessageReciever implements Runnable {
             }
         }
 
-        AbstractHandler handlerForCommand = getHandlerForCommand(parsedCommand.getCommand());
+        UpdateHandler handlerForCommand = getHandlerForCommand(parsedCommand.getCommand());
         String operationResult = handlerForCommand.operate(chatId.toString(), parsedCommand, update);
 
         if (!"".equals(operationResult)) {
@@ -73,10 +87,10 @@ public class MessageReciever implements Runnable {
         }
     }
 
-    private AbstractHandler getHandlerForCommand(Command command) {
+    private UpdateHandler getHandlerForCommand(Command command) {
         if (command == null) {
             log.warn("Null command accepted. This is not good scenario.");
-            return new DefaultHandler(bot);
+            return defaultHandler;
         }
         switch (command) {
             case START:
@@ -85,20 +99,17 @@ public class MessageReciever implements Runnable {
             case REG:
             case LIST:
             case STICKER:
-                SystemHandler systemHandler = new SystemHandler(bot);
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
                 return systemHandler;
             case NOTIFY:
-                NotifyHandler notifyHandler = new NotifyHandler(bot);
                 log.info("Handler for command[" + command.toString() + "] is: " + notifyHandler);
                 return notifyHandler;
             case TEXT_CONTAIN_EMOJI:
-                EmojiHandler emojiHandler = new EmojiHandler(bot);
                 log.info("Handler for command[" + command.toString() + "] is: " + emojiHandler);
                 return emojiHandler;
             default:
                 log.info("Handler for command[" + command.toString() + "] not Set. Return DefaultHandler");
-                return new DefaultHandler(bot);
+                return defaultHandler;
         }
     }
 }

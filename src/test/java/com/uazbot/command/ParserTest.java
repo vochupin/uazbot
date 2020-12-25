@@ -11,7 +11,7 @@ public class ParserTest {
 
     @Before
     public void setParser() {
-        parser = new Parser(botName);
+        //parser = new Parser(botName); FIXME
     }
 
     @Test

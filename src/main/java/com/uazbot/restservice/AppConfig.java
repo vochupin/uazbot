@@ -18,4 +18,6 @@ public class AppConfig {
     @Value( "${bot.token}" )
     private String botToken;
 
+    @Value("${bot.name}" )
+    private String botName;
 }

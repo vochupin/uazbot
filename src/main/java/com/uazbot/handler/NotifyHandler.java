@@ -4,16 +4,18 @@ import com.uazbot.ability.Notify;
 import com.uazbot.bot.Bot;
 import com.uazbot.command.ParsedCommand;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class NotifyHandler extends AbstractHandler {
+@Component
+public class NotifyHandler implements UpdateHandler {
     private static final Logger log = Logger.getLogger(NotifyHandler.class);
     private final int MILLISEC_IN_SEC = 1000;
     private String WRONG_INPUT_MESSAGE = "Wrong input. Time must be specified as an integer greater than 0";
 
-    public NotifyHandler(Bot bot) {
-        super(bot);
-    }
+    @Autowired
+    Bot bot;
 
     @Override
     public String operate(String chatId, ParsedCommand parsedCommand, Update update) {

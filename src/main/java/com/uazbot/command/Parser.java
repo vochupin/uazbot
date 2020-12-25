@@ -1,20 +1,23 @@
 package com.uazbot.command;
 
+import com.uazbot.restservice.AppConfig;
 import com.vdurmont.emoji.EmojiParser;
 import javafx.util.Pair;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Parser {
     private static final Logger log = Logger.getLogger(Parser.class);
     private final String PREFIX_FOR_COMMAND = "/";
     private final String DELIMITER_COMMAND_BOTNAME = "@";
-    private String botName;
 
-    public Parser(String botName) {
-        this.botName = botName;
-    }
+    @Autowired
+    AppConfig appConfig;
+
 
     public ParsedCommand getParsedCommand(String text) {
         String trimText = "";
@@ -72,7 +75,7 @@ public class Parser {
     private boolean isCommandForMe(String command) {
         if (command.contains(DELIMITER_COMMAND_BOTNAME)) {
             String botNameForEqual = command.substring(command.indexOf(DELIMITER_COMMAND_BOTNAME) + 1);
-            return botName.equals(botNameForEqual);
+            return appConfig.getBotName().equals(botNameForEqual);
         }
         return true;
     }

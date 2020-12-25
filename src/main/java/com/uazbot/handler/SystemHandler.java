@@ -4,24 +4,30 @@ import com.uazbot.bot.Bot;
 import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.entity.Person;
+import com.uazbot.restservice.AppConfig;
 import com.uazbot.service.PersonService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.List;
 import java.util.Optional;
 
-public class SystemHandler extends AbstractHandler {
+@Component
+public class SystemHandler implements UpdateHandler {
     private static final Logger log = Logger.getLogger(SystemHandler.class);
     private final String END_LINE = "\n";
 
-    private final PersonService personService;
+    @Autowired
+    AppConfig appConfig;
 
-    public SystemHandler(Bot bot) {
-        super(bot);
-        personService = bot.getPersonService();
-    }
+    @Autowired
+    Bot bot;
+
+    @Autowired
+    PersonService personService;
 
     @Override
     public String operate(String chatId, ParsedCommand parsedCommand, Update update) {
@@ -91,7 +97,7 @@ public class SystemHandler extends AbstractHandler {
         sendMessage.setChatId(chatID);
         sendMessage.enableMarkdown(true);
         StringBuilder text = new StringBuilder();
-        text.append("Привет! Я  *").append(bot.getBotName()).append("*").append(END_LINE);
+        text.append("Привет! Я  *").append(appConfig.getBotName()).append("*").append(END_LINE);
         text.append("Я создан специально для чата патроводов.").append(END_LINE);
         text.append("Все что я могу, можно узнать по команде [/help](/help)");
         sendMessage.setText(text.toString());

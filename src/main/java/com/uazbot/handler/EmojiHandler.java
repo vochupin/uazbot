@@ -1,22 +1,19 @@
 package com.uazbot.handler;
 
-import com.uazbot.bot.Bot;
 import com.uazbot.command.ParsedCommand;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class EmojiHandler extends AbstractHandler {
+@Component
+public class EmojiHandler implements UpdateHandler {
     private static final Logger log = Logger.getLogger(EmojiHandler.class);
-
-    public EmojiHandler(Bot bot) {
-        super(bot);
-    }
 
     @Override
     public String operate(String chatId, ParsedCommand parsedCommand, Update update) {
