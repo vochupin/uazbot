@@ -1,6 +1,7 @@
 CREATE TABLE person (
-    pid         SERIAL PRIMARY KEY,
+    pid         bigint PRIMARY KEY,
     firstname   varchar(64),
     lastname    varchar(64),
-    username    varchar(32)
+    username    varchar(32),
+    fromwhere   varchar(128)
 );

@@ -14,9 +14,8 @@ import java.io.Serializable;
 public class Person implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pid", nullable = false)
-    private Integer pid;
+    private Long pid;
 
     @Column(name = "firstname", nullable = true)
     private String firstName;
@@ -26,4 +25,7 @@ public class Person implements Serializable {
 
     @Column(name = "username", nullable = true)
     private String userName;
+
+    @Column(name = "fromwhere", nullable = true)
+    private String fromWhere;
 }

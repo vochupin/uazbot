@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.List;
+import java.util.Optional;
 
 public class SystemHandler extends AbstractHandler {
     private static final Logger log = Logger.getLogger(SystemHandler.class);
@@ -35,10 +36,20 @@ public class SystemHandler extends AbstractHandler {
                 break;
             case REG:
                 User user = update.getMessage().getFrom();
-                Person person = new Person();
+
+                Optional<Person> optionalPerson = personService.getPersonById(user.getId().longValue());
+                Person person;
+                if (optionalPerson.isPresent()) {
+                    person = optionalPerson.get();
+                } else {
+                    person = new Person();
+                    person.setPid(user.getId().longValue());
+                }
+
                 person.setFirstName(user.getFirstName());
                 person.setLastName(user.getLastName());
                 person.setUserName(user.getUserName());
+                person.setFromWhere(parsedCommand.getText());
 
                 personService.createPerson(person);
 
