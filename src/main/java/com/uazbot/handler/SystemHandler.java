@@ -9,6 +9,10 @@ import com.uazbot.service.NominatimService;
 import com.uazbot.service.PersonService;
 import fr.dudie.nominatim.model.Address;
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -65,7 +69,15 @@ public class SystemHandler implements UpdateHandler {
 
                 Address address = nominatimService.getAddress(parsedCommand.getText());
 
-                log.info(address.getDisplayName());
+                if (address != null) {
+                    log.debug("Адрес получен: " + address.getDisplayName());
+
+                    person.setPlaceName(address.getDisplayName());
+
+                    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+                    Point point = geometryFactory.createPoint(new Coordinate(address.getLongitude(), address.getLatitude()));
+                    person.setGeom(point);
+                }
 
                 personService.createPerson(person);
 

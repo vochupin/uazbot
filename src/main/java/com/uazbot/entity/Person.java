@@ -1,7 +1,11 @@
 package com.uazbot.entity;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -28,4 +32,9 @@ public class Person implements Serializable {
 
     @Column(name = "fromwhere", nullable = true)
     private String fromWhere;
+
+    @Column(name = "placename", nullable = true)
+    private String placeName;
+
+    private Point geom;
 }
