@@ -45,9 +45,6 @@ public class RestServiceApplication {
     @Autowired
     Bot uazBot;
 
-    @Autowired
-    MessageReciever messageReciever;
-
     @Bean
     public JmsListenerContainerFactory<?> uazBotJmsListenerFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory,
                                                     DefaultJmsListenerContainerFactoryConfigurer configurer) {
@@ -75,12 +72,6 @@ public class RestServiceApplication {
         MessageSender messageSender = new MessageSender(uazBot);
 
         uazBot.botConnect();
-
-        Thread receiver = new Thread(messageReciever);
-        receiver.setDaemon(true);
-        receiver.setName("MsgReciever");
-        receiver.setPriority(PRIORITY_FOR_RECEIVER);
-        receiver.start();
 
         Thread sender = new Thread(messageSender);
         sender.setDaemon(true);

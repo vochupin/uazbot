@@ -7,6 +7,7 @@ import com.uazbot.command.Parser;
 import com.uazbot.handler.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -14,9 +15,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 
 @Component
-public class MessageReciever implements Runnable {
+public class MessageReciever {
     private static final Logger log = Logger.getLogger(MessageReciever.class);
-    private final int WAIT_FOR_NEW_MESSAGE_DELAY = 1000;
 
     @Autowired
     Bot bot;
@@ -36,32 +36,10 @@ public class MessageReciever implements Runnable {
     @Autowired
     EmojiHandler emojiHandler;
 
-    @Override
-    public void run() {
-        log.info("[STARTED] MsgReciever.  Bot class: " + bot);
-        while (true) {
-            for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
-                log.debug("New object for analyze in queue " + object.toString());
-                analyze(object);
-            }
-            try {
-                Thread.sleep(WAIT_FOR_NEW_MESSAGE_DELAY);
-            } catch (InterruptedException e) {
-                log.error("Catch interrupt. Exit", e);
-                return;
-            }
-        }
-    }
+    @JmsListener(destination = "updateHandler", containerFactory = "uazBotJmsListenerFactory")
+    public void analyzeForUpdateType(Update update) {
+        log.debug("Update recieved: " + update.toString());
 
-    private void analyze(Object object) {
-        if (object instanceof Update) {
-            Update update = (Update) object;
-            log.debug("Update recieved: " + update.toString());
-            analyzeForUpdateType(update);
-        } else log.warn("Cant operate type of object: " + object.toString());
-    }
-
-    private void analyzeForUpdateType(Update update) {
         Message message = update.getMessage();
         Long chatId = message.getChatId();
 

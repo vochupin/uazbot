@@ -34,16 +34,11 @@ public class Bot extends TelegramLongPollingBot {
     PersonService personService;
 
     public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
-    public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onUpdateReceived(Update update) {
-        // Send a message with a POJO - the template reuse the message converter
-        System.out.println("Sending an email message.");
-        jmsTemplate.convertAndSend("updateHandler", update);
-
         log.debug("Receive new Update. updateID: " + update.getUpdateId());
-        receiveQueue.add(update);
+        jmsTemplate.convertAndSend("updateHandler", update);
     }
 
     @Override
