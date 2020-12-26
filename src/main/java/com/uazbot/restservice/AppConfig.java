@@ -20,4 +20,11 @@ public class AppConfig {
 
     @Value("${bot.name}" )
     private String botName;
+
+    @Value("${nominatim.server.url}")
+    private String nominatimServerUrl;
+
+    @Value("${nominatim.header.email}")
+    private String nominatimHeaderEmail;
+
 }

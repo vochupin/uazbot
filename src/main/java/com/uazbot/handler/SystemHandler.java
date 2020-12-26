@@ -5,13 +5,16 @@ import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.entity.Person;
 import com.uazbot.restservice.AppConfig;
+import com.uazbot.service.NominatimService;
 import com.uazbot.service.PersonService;
+import fr.dudie.nominatim.model.Address;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,9 @@ public class SystemHandler implements UpdateHandler {
 
     @Autowired
     PersonService personService;
+
+    @Autowired
+    NominatimService nominatimService;
 
     @Override
     public String operate(String chatId, ParsedCommand parsedCommand, Update update) {
@@ -56,6 +62,10 @@ public class SystemHandler implements UpdateHandler {
                 person.setLastName(user.getLastName());
                 person.setUserName(user.getUserName());
                 person.setFromWhere(parsedCommand.getText());
+
+                Address address = nominatimService.getAddress(parsedCommand.getText());
+
+                log.info(address.getDisplayName());
 
                 personService.createPerson(person);
 
