@@ -89,7 +89,7 @@ public class SystemHandler implements UpdateHandler {
                     sb.append(p + "\n");
                 }
 
-                return "Зареганы: " + sb.toString();
+                return "Зареганы:\n" + sb.toString();
             case ID:
                 return "Ваш telegramID: " + update.getMessage().getFrom().getId();
             case STICKER:
