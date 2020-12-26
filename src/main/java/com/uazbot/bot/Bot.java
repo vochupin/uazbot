@@ -12,6 +12,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -33,12 +35,10 @@ public class Bot extends TelegramLongPollingBot {
     @Autowired
     PersonService personService;
 
-    public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
-
     @Override
     public void onUpdateReceived(Update update) {
         log.debug("Receive new Update. updateID: " + update.getUpdateId());
-        jmsTemplate.convertAndSend("updateHandler", update);
+        jmsTemplate.convertAndSend("receiveHandler", update);
     }
 
     @Override
@@ -51,6 +51,10 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotToken() {
         log.debug("Bot token: " + appConfig.getBotToken());
         return appConfig.getBotToken();
+    }
+
+    public void sendMessage(PartialBotApiMethod<Message> message) {
+        jmsTemplate.convertAndSend("sendHandler", message);
     }
 
     public void botConnect() {

@@ -69,15 +69,8 @@ public class RestServiceApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
-        MessageSender messageSender = new MessageSender(uazBot);
 
         uazBot.botConnect();
-
-        Thread sender = new Thread(messageSender);
-        sender.setDaemon(true);
-        sender.setName("MsgSender");
-        sender.setPriority(PRIORITY_FOR_SENDER);
-        sender.start();
 
         sendStartReport(uazBot);
     }
@@ -86,6 +79,7 @@ public class RestServiceApplication {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(appConfig.getBotAdminChatId());
         sendMessage.setText("Запустился");
-        bot.sendQueue.add(sendMessage);
+
+        bot.sendMessage(sendMessage);
     }
 }

@@ -35,10 +35,10 @@ public class SystemHandler implements UpdateHandler {
 
         switch (command) {
             case START:
-                bot.sendQueue.add(getMessageStart(chatId));
+                bot.sendMessage(getMessageStart(chatId));
                 break;
             case HELP:
-                bot.sendQueue.add(getMessageHelp(chatId));
+                bot.sendMessage(getMessageHelp(chatId));
                 break;
             case REG:
                 User user = update.getMessage().getFrom();

@@ -24,10 +24,10 @@ public class Notify implements Runnable {
     @Override
     public void run() {
         log.info("RUN. " + toString());
-        bot.sendQueue.add(getFirstMessage());
+        bot.sendMessage(getFirstMessage());
         try {
             Thread.sleep(delayInMillisec);
-            bot.sendQueue.add(Stickers.FUNNY_JIM_CARREY.getSendSticker(chatID));
+            bot.sendMessage(Stickers.FUNNY_JIM_CARREY.getSendSticker(chatID));
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }

@@ -2,40 +2,23 @@ package com.uazbot.service;
 
 import com.uazbot.bot.Bot;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-public class MessageSender implements Runnable {
+@Component
+public class MessageSender {
     private static final Logger log = Logger.getLogger(MessageSender.class);
-    private final int SENDER_SLEEP_TIME = 1000;
+
+    @Autowired
     private Bot bot;
 
-    public MessageSender(Bot bot) {
-        this.bot = bot;
-    }
-
-    @Override
-    public void run() {
-        log.info("[STARTED] MsgSender.  Bot class: " + bot);
-        try {
-            while (true) {
-                for (Object object = bot.sendQueue.poll(); object != null; object = bot.sendQueue.poll()) {
-                    log.debug("Get new msg to send " + object);
-                    send(object);
-                }
-                try {
-                    Thread.sleep(SENDER_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    log.error("Take interrupt while operate msg list", e);
-                }
-            }
-        } catch (Exception e) {
-            log.error(e);
-        }
-    }
-
-    private void send(Object object) {
+    @JmsListener(destination = "sendHandler", containerFactory = "uazBotJmsListenerFactory")
+    private void send(PartialBotApiMethod<Message> object) {
         try {
             MessageType messageType = messageType(object);
             switch (messageType) {
@@ -57,7 +40,7 @@ public class MessageSender implements Runnable {
         }
     }
 
-    private MessageType messageType(Object object) {
+    private MessageType messageType(PartialBotApiMethod<Message> object) {
         if (object instanceof SendSticker) return MessageType.STICKER;
         if (object instanceof BotApiMethod) return MessageType.EXECUTE;
         return MessageType.NOT_DETECTED;

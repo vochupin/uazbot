@@ -36,7 +36,7 @@ public class MessageReciever {
     @Autowired
     EmojiHandler emojiHandler;
 
-    @JmsListener(destination = "updateHandler", containerFactory = "uazBotJmsListenerFactory")
+    @JmsListener(destination = "receiveHandler", containerFactory = "uazBotJmsListenerFactory")
     public void analyzeForUpdateType(Update update) {
         log.debug("Update recieved: " + update.toString());
 
@@ -61,7 +61,7 @@ public class MessageReciever {
             SendMessage messageOut = new SendMessage();
             messageOut.setChatId(chatId.toString());
             messageOut.setText(operationResult);
-            bot.sendQueue.add(messageOut);
+            bot.sendMessage(messageOut);
         }
     }
 
