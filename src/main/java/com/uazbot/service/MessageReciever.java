@@ -76,6 +76,8 @@ public class MessageReciever {
             case ID:
             case REG:
             case LIST:
+            case FROM:
+            case NAME:
             case STICKER:
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
                 return systemHandler;

@@ -22,6 +22,14 @@ public class PersonService {
         return personRepository.findAll();
     }
 
+    public List<Person> findByName(String name) {
+        return personRepository.findByName(name);
+    }
+
+    public List<Person> findByAddress(String address) {
+        return personRepository.findByAddress(address);
+    }
+
     public Optional<Person> getPersonById(Long id) {
         return personRepository.findById(id);
     }

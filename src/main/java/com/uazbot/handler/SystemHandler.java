@@ -99,6 +99,24 @@ public class SystemHandler implements UpdateHandler {
                 }
 
                 return "Зареганы:\n" + sb.toString();
+            case NAME:
+                StringBuilder sb1 = new StringBuilder();
+                sb1.append("Найдено по имени:\n");
+                List<Person> persons = personService.findByName(parsedCommand.getText());
+                for (Person p : persons) {
+                    sb1.append(p).append("\n");
+                }
+
+                return sb1.toString();
+            case FROM:
+                StringBuilder sb2 = new StringBuilder();
+                sb2.append("Найдено по адресу:\n");
+                List<Person> persons2 = personService.findByAddress(parsedCommand.getText());
+                for (Person p : persons2) {
+                    sb2.append(p).append("\n");
+                }
+
+                return sb2.toString();
             case ID:
                 return "Ваш telegramID: " + update.getMessage().getFrom().getId();
             case STICKER:
