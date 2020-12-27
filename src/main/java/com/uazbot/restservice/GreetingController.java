@@ -1,14 +1,14 @@
 package com.uazbot.restservice;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
-import com.uazbot.entity.Test;
-import com.uazbot.service.TestService;
+import com.uazbot.entity.Person;
+import com.uazbot.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class GreetingController {
@@ -17,12 +17,12 @@ public class GreetingController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@Autowired
-	TestService testService;
+	PersonService personService;
 
-	@GetMapping("/greeting")
+	@GetMapping("/persons")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		List<Test> tests = testService.list();
+		List<Person> personList = personService.list();
 
-		return new Greeting(counter.incrementAndGet(), String.format(template, name, "тестовых записей = " + tests.size()));
+		return new Greeting(counter.incrementAndGet(), String.format(template, name, "Записей по персонам = " + personList.size()));
 	}
 }
