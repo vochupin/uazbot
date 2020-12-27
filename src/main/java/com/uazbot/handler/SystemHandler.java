@@ -54,7 +54,7 @@ public class SystemHandler implements UpdateHandler {
             case HELP:
                 bot.sendMessage(getMessageHelp(chatId));
                 break;
-            case REG:
+            case FROM:
                 User user = update.getMessage().getFrom();
 
                 Optional<Person> optionalPerson = personService.getPersonById(user.getId().longValue());
@@ -69,7 +69,7 @@ public class SystemHandler implements UpdateHandler {
                 person.setFirstName(user.getFirstName());
                 person.setLastName(user.getLastName());
                 person.setUserName(user.getUserName());
-                person.setFromWhere(parsedCommand.getText());
+                person.setUserPlace(parsedCommand.getText());
 
                 person.setText(Stream.of(user.getFirstName(), user.getLastName(), person.getUserName())
                 .filter(Objects::nonNull)
@@ -81,11 +81,11 @@ public class SystemHandler implements UpdateHandler {
                 if (address != null) {
                     log.debug("Адрес получен: " + address.getDisplayName());
 
-                    person.setPlaceName(address.getDisplayName());
+                    person.setOsmPlaceName(address.getDisplayName());
 
                     GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
                     Point point = geometryFactory.createPoint(new Coordinate(address.getLongitude(), address.getLatitude()));
-                    person.setGeom(point);
+                    person.setOsmMapPoint(point);
                 }
 
                 personService.createPerson(person);
@@ -99,7 +99,7 @@ public class SystemHandler implements UpdateHandler {
                 }
 
                 return "Зареганы:\n" + sb.toString();
-            case NAME:
+            case BYNAME:
                 StringBuilder sb1 = new StringBuilder();
                 sb1.append("Найдено по имени:\n");
                 List<Person> persons = personService.findByName(parsedCommand.getText());
@@ -108,7 +108,7 @@ public class SystemHandler implements UpdateHandler {
                 }
 
                 return sb1.toString();
-            case FROM:
+            case BYPLACE:
                 StringBuilder sb2 = new StringBuilder();
                 sb2.append("Найдено по адресу:\n");
                 List<Person> persons2 = personService.findByAddress(parsedCommand.getText());
@@ -135,7 +135,11 @@ public class SystemHandler implements UpdateHandler {
         text.append("[/start](/start) - show start message").append(END_LINE);
         text.append("[/help](/help) - show help message").append(END_LINE);
         text.append("[/id](/id) - know your ID in telegram ").append(END_LINE);
-        text.append("/*notify* _time-in-sec_  - receive notification from me after the specified time").append(END_LINE);
+        text.append("/*notify* _time-in-sec_  - receive notification from me after the specified time").append(END_LINE).append(END_LINE);
+        text.append("/*from* _место_ - сохранить место откуда ты").append(END_LINE);
+        text.append("/*list* - показать все записи откуда кто").append(END_LINE);
+        text.append("/*byname* _имя_ - поискать по имени").append(END_LINE);
+        text.append("/*byplace* _место_ - поискать по имени места из OSM").append(END_LINE);
 
         sendMessage.setText(text.toString());
         return sendMessage;

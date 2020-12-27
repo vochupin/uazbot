@@ -4,7 +4,7 @@ public enum Command {
     NONE, NOTFORME,
 
     NOTIFY,
-    START, HELP, ID, REG, LIST, FROM, NAME,
+    START, HELP, ID, FROM, LIST, BYPLACE, BYNAME,
     TEXT_CONTAIN_EMOJI,
     STICKER,
 }

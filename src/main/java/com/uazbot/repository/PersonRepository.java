@@ -15,6 +15,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query(value = "select * from person where text ilike (concat('%', :name, '%'))", nativeQuery = true)
     List<Person> findByName(@Param("name") String name);
 
-    @Query(value = "select * from person where placename ilike (concat('%', :address, '%'))", nativeQuery = true)
+    @Query(value = "select * from person where osm_place_name ilike (concat('%', :address, '%'))", nativeQuery = true)
     List<Person> findByAddress(@Param("address") String address);
 }

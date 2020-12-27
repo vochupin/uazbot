@@ -21,22 +21,22 @@ public class Person implements Serializable {
     @Column(name = "pid", nullable = false)
     private Long pid;
 
-    @Column(name = "firstname", nullable = true)
+    @Column(name = "first_name", nullable = true)
     private String firstName;
 
-    @Column(name = "lastname", nullable = true)
+    @Column(name = "last_name", nullable = true)
     private String lastName;
 
-    @Column(name = "username", nullable = true)
+    @Column(name = "user_name", nullable = true)
     private String userName;
 
-    @Column(name = "fromwhere", nullable = true)
-    private String fromWhere;
+    @Column(name = "user_place", nullable = true)
+    private String userPlace;
 
-    @Column(name = "placename", nullable = true)
-    private String placeName;
+    @Column(name = "osm_place_name", nullable = true)
+    private String osmPlaceName;
 
-    private Point geom;
+    private Point osmMapPoint;
 
     @Column(name = "text", nullable = true)
     private String text;

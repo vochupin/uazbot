@@ -74,10 +74,10 @@ public class MessageReciever {
             case START:
             case HELP:
             case ID:
-            case REG:
-            case LIST:
             case FROM:
-            case NAME:
+            case LIST:
+            case BYPLACE:
+            case BYNAME:
             case STICKER:
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
                 return systemHandler;
