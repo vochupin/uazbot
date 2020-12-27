@@ -37,4 +37,7 @@ public class Person implements Serializable {
     private String placeName;
 
     private Point geom;
+
+    @Column(name = "text", nullable = true)
+    private String text;
 }

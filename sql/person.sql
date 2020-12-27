@@ -5,5 +5,6 @@ CREATE TABLE person (
     username    varchar(32),
     fromwhere   varchar(128),
     geom geometry(Point, 4326),
-    placename   varchar(4096)
+    placename   varchar(4096),
+    text        varchar(256)
 );

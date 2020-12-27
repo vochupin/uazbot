@@ -20,7 +20,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class SystemHandler implements UpdateHandler {
@@ -66,6 +70,11 @@ public class SystemHandler implements UpdateHandler {
                 person.setLastName(user.getLastName());
                 person.setUserName(user.getUserName());
                 person.setFromWhere(parsedCommand.getText());
+
+                person.setText(Stream.of(user.getFirstName(), user.getLastName(), person.getUserName())
+                .filter(Objects::nonNull)
+                    .filter(Predicate.not(String::isBlank))
+                    .collect(Collectors.joining(" ")));
 
                 Address address = nominatimService.getAddress(parsedCommand.getText());
 
