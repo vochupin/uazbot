@@ -30,8 +30,6 @@ import javax.jms.ConnectionFactory;
 @EnableJms
 public class UazBotApplication {
     private static final Logger log = Logger.getLogger(UazBotApplication.class);
-    private static final int PRIORITY_FOR_SENDER = 1;
-    private static final int PRIORITY_FOR_RECEIVER = 3;
 
     @Autowired
     AppConfig appConfig;

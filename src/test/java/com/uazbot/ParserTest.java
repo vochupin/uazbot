@@ -4,16 +4,16 @@ import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.command.Parser;
 import com.uazbot.restservice.AppConfig;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
-@ComponentScan(basePackages = {"com.uazbot"})
 public class ParserTest {
 
     @Autowired
@@ -26,7 +26,7 @@ public class ParserTest {
     public void getParsedCommand_None() {
         String text = "just text";
         ParsedCommand parsedCommandAndText = parser.getParsedCommand(text);
-        Assert.assertEquals(Command.NONE, parsedCommandAndText.getCommand());
+        assertEquals(Command.NONE, parsedCommandAndText.getCommand());
         assertEquals(text, parsedCommandAndText.getText());
     }
 
