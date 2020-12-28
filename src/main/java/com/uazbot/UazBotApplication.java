@@ -1,8 +1,7 @@
-package com.uazbot.restservice;
+package com.uazbot;
 
 import com.uazbot.bot.Bot;
-import com.uazbot.service.MessageReciever;
-import com.uazbot.service.MessageSender;
+import com.uazbot.restservice.AppConfig;
 import com.uazbot.service.PersonService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jms.annotation.EnableJms;
@@ -27,12 +25,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import javax.jms.ConnectionFactory;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.uazbot"})
 @EntityScan(basePackages = {"com.uazbot.entity"})
 @EnableJpaRepositories("com.uazbot.repository")
 @EnableJms
-public class RestServiceApplication {
-    private static final Logger log = Logger.getLogger(RestServiceApplication.class);
+public class UazBotApplication {
+    private static final Logger log = Logger.getLogger(UazBotApplication.class);
     private static final int PRIORITY_FOR_SENDER = 1;
     private static final int PRIORITY_FOR_RECEIVER = 3;
 
@@ -64,7 +61,7 @@ public class RestServiceApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(RestServiceApplication.class, args);
+        SpringApplication.run(UazBotApplication.class, args);
     }
 
     @EventListener(ApplicationReadyEvent.class)
