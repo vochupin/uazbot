@@ -32,3 +32,5 @@ hs_err_pid*
 #credentials config
 /src/main/resources/credentials.properties
 /src/main/resources/application.properties
+/src/test/properties/application-test.properties
+/src/test/properties/credentials.properties
