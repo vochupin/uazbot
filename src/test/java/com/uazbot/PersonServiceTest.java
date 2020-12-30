@@ -22,6 +22,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -82,8 +84,38 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void searchByRange() {
+    public void searchByRangeFromTsk() {
+        List<Person> personList = personService.listByRange(278123450L, null);
 
+        Long[] fromTskPids = new Long[]{278123450L, 278123451L, 278123452L, 278123453L, 278123454L, 278123455L, 278123456L, 278123457L};
+
+        for (int i = 0; i < PERSONS_NUMBER; i++) {
+            assertEquals(fromTskPids[i], personList.get(i).getPid());
+        }
+    }
+
+    @Test
+    public void searchByRangeFromLondon() {
+        List<Person> personList = personService.listByRange(278123457L, null);
+
+        Long[] fromTskPids = new Long[]{278123457L, 278123456L, 278123455L, 278123454L, 278123453L, 278123452L, 278123450L, 278123451L};
+
+        for (int i = 0; i < PERSONS_NUMBER; i++) {
+            assertEquals(fromTskPids[i], personList.get(i).getPid());
+        }
+    }
+
+    @Test
+    public void limitedSearchByRange() {
+        List<Person> personList = personService.listByRange(278123457L, 5);
+
+        assertEquals(personList.size(), 5);
+
+        Long[] fromTskPids = new Long[]{278123457L, 278123456L, 278123455L, 278123454L, 278123453L};
+
+        for (int i = 0; i < 5; i++) {
+            assertEquals(fromTskPids[i], personList.get(i).getPid());
+        }
     }
 
     private void generateTextField(Person person) {

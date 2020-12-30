@@ -33,4 +33,8 @@ public class PersonService {
     public Optional<Person> getPersonById(Long id) {
         return personRepository.findById(id);
     }
+
+    public List<Person> listByRange(Long pid, Integer limit) {
+        return personRepository.listByRange(pid, limit == null ? 10 : limit);
+    }
 }

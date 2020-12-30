@@ -23,4 +23,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query(value = "delete from person", nativeQuery = true)
     void deleteAll();
 
+    @Query(value = "select * from person p order by ST_Distance((select p1.osm_map_point from person p1 where p1.pid = :pid), p.osm_map_point) asc limit :listLimit", nativeQuery = true)
+    List<Person> listByRange(@Param("pid") long pid, @Param("listLimit") int listLimit);
 }
