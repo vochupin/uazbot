@@ -71,7 +71,7 @@ public class SystemHandler implements UpdateHandler {
                 person.setUserName(user.getUserName());
                 person.setUserPlace(parsedCommand.getText());
 
-                person.setText(Stream.of(user.getFirstName(), user.getLastName(), person.getUserName())
+                person.setText(Stream.of(person.getFirstName(), person.getLastName(), person.getUserName())
                 .filter(Objects::nonNull)
                     .filter(Predicate.not(String::isBlank))
                     .collect(Collectors.joining(" ")));
@@ -88,7 +88,7 @@ public class SystemHandler implements UpdateHandler {
                     person.setOsmMapPoint(point);
                 }
 
-                personService.createPerson(person);
+                personService.createOrUpdatePerson(person);
 
                 return "Запись по персоне создана: " + person.toString();
             case LIST:

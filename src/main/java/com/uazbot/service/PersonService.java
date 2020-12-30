@@ -14,7 +14,7 @@ public class PersonService {
     @Autowired
     PersonRepository personRepository;
 
-    public void createPerson(Person person){
+    public void createOrUpdatePerson(Person person){
         personRepository.save(person);
     }
 
