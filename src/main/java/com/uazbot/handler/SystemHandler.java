@@ -51,9 +51,11 @@ public class SystemHandler implements UpdateHandler {
             case START:
                 bot.sendMessage(getMessageStart(chatId));
                 break;
+
             case HELP:
                 bot.sendMessage(getMessageHelp(chatId));
                 break;
+
             case FROM:
                 User user = update.getMessage().getFrom();
 
@@ -90,48 +92,49 @@ public class SystemHandler implements UpdateHandler {
 
                 personService.createOrUpdatePerson(person);
 
-                return "Запись по персоне создана: " + person.toString();
+                return "Запись по персоне создана(изменена): \n" + person.getLongDescription();
+
             case LIST:
-                StringBuilder sb = new StringBuilder();
-                List<Person> personList = personService.list();
-                for (Person p : personList) {
-                    sb.append(p + "\n");
-                }
+                return makeUserListString("Полный список участников:", personService.list());
 
-                return "Зареганы:\n" + sb.toString();
             case BYNAME:
-                StringBuilder sb1 = new StringBuilder();
-                sb1.append("Найдено по имени:\n");
-                List<Person> persons = personService.findByName(parsedCommand.getText());
-                for (Person p : persons) {
-                    sb1.append(p).append("\n");
+                if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
+                    return "Должен быть параметр";
                 }
 
-                return sb1.toString();
+                return makeUserListString("Найдено по имени:", personService.findByName(parsedCommand.getText()));
+
             case BYPLACE:
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("Найдено по адресу:\n");
-                List<Person> persons2 = personService.findByAddress(parsedCommand.getText());
-                for (Person p : persons2) {
-                    sb2.append(p).append("\n");
+                if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
+                    return "Должен быть параметр";
                 }
 
-                return sb2.toString();
+                return makeUserListString("Найдено по адресу::", personService.findByAddress(parsedCommand.getText()));
+
             case BYRANGE:
-                StringBuilder sb3 = new StringBuilder();
-                sb3.append("По увеличению расстояния:\n");
-                List<Person> person3 = personService.listByRange(update.getMessage().getFrom().getId().longValue(), null);
-                for (Person p : person3) {
-                    sb3.append(p).append("\n");
-                }
+                return makeUserListString("По увеличению расстояния:", personService.listByRange(update.getMessage().getFrom().getId().longValue(), null));
 
-                return sb3.toString();
             case ID:
                 return "Ваш telegramID: " + update.getMessage().getFrom().getId();
+                
             case STICKER:
                 return "StickerID: " + parsedCommand.getText();
         }
         return "";
+    }
+
+    private String makeUserListString(String header, List<Person> persons) {
+
+        if (persons == null || persons.isEmpty()) {
+            return "Ничего не найдено.\n";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(header).append("\n");
+        for (Person p : persons) {
+            sb.append("  ").append(p.getShortDescription()).append("\n");
+        }
+        return sb.toString();
     }
 
     private SendMessage getMessageHelp(String chatID) {

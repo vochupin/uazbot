@@ -40,4 +40,24 @@ public class Person implements Serializable {
 
     @Column(name = "text", nullable = true)
     private String text;
+
+    public String getShortDescription() {
+        return firstName + " " + lastName + " [" + userName + "]: " + osmPlaceName;
+    }
+
+    public String getLongDescription() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Имя: ").append(firstName).append("\n")
+            .append("Фамилия: ").append(lastName).append("\n")
+            .append("username: ").append(userName).append("\n")
+            .append("Откуда(как сам ввел): ").append(userPlace).append("\n")
+            .append("Откуда(из OSM): ").append(osmPlaceName).append("\n")
+            .append("Координаты места из OSM:\n")
+            .append("Долгота: ").append(osmMapPoint != null ? osmMapPoint.getCoordinate().x : "...").append("\n")
+            .append("Широта: ").append(osmMapPoint != null ? osmMapPoint.getCoordinate().y : "...").append("\n");
+
+
+        return sb.toString();
+    }
 }
