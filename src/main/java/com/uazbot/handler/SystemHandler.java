@@ -117,6 +117,15 @@ public class SystemHandler implements UpdateHandler {
                 }
 
                 return sb2.toString();
+            case BYRANGE:
+                StringBuilder sb3 = new StringBuilder();
+                sb3.append("По увеличению расстояния:\n");
+                List<Person> person3 = personService.listByRange(update.getMessage().getFrom().getId().longValue(), null);
+                for (Person p : person3) {
+                    sb3.append(p).append("\n");
+                }
+
+                return sb3.toString();
             case ID:
                 return "Ваш telegramID: " + update.getMessage().getFrom().getId();
             case STICKER:
@@ -134,12 +143,11 @@ public class SystemHandler implements UpdateHandler {
         text.append("*This is help message*").append(END_LINE).append(END_LINE);
         text.append("[/start](/start) - show start message").append(END_LINE);
         text.append("[/help](/help) - show help message").append(END_LINE);
-        text.append("[/id](/id) - know your ID in telegram ").append(END_LINE);
-        text.append("/*notify* _time-in-sec_  - receive notification from me after the specified time").append(END_LINE).append(END_LINE);
         text.append("/*from* _место_ - сохранить место откуда ты").append(END_LINE);
         text.append("/*list* - показать все записи откуда кто").append(END_LINE);
         text.append("/*byname* _имя_ - поискать по имени").append(END_LINE);
         text.append("/*byplace* _место_ - поискать по имени места из OSM").append(END_LINE);
+        text.append("/*byrange* - список участников чата сортированных по расстоянию до вас (сперва близкие)").append(END_LINE);
 
         sendMessage.setText(text.toString());
         return sendMessage;

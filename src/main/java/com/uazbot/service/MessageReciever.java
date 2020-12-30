@@ -78,6 +78,7 @@ public class MessageReciever {
             case LIST:
             case BYPLACE:
             case BYNAME:
+            case BYRANGE:
             case STICKER:
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
                 return systemHandler;
