@@ -15,6 +15,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -67,6 +68,18 @@ public class SystemHandler implements UpdateHandler {
                 break;
 
             case FROM:
+                String text = parsedCommand.getText();
+                if (StringUtils.isEmpty(text)) {
+                    return "Команда */from* должна быть с местом откуда ты.";
+                }
+
+                Address address = nominatimService.getAddress(text);
+                if (address == null) {
+                    return "Регион не найден: " + text;
+                }
+
+                log.debug("Адрес получен: " + address.getDisplayName());
+
                 User user = message.getFrom();
 
                 Optional<Person> optionalPerson = personService.getPersonById(user.getId().longValue());
@@ -82,23 +95,16 @@ public class SystemHandler implements UpdateHandler {
                 person.setLastName(user.getLastName());
                 person.setUserName(user.getUserName());
                 person.setUserPlace(parsedCommand.getText());
+                person.setOsmPlaceName(address.getDisplayName());
 
-                person.setText(Stream.of(person.getFirstName(), person.getLastName(), person.getUserName())
+                person.setText(Stream.of(person.getFirstName(), person.getLastName(), person.getUserName(), person.getOsmPlaceName(), person.getUserPlace())
                 .filter(Objects::nonNull)
                     .filter(Predicate.not(String::isBlank))
                     .collect(Collectors.joining(" ")));
 
-                Address address = nominatimService.getAddress(parsedCommand.getText());
-
-                if (address != null) {
-                    log.debug("Адрес получен: " + address.getDisplayName());
-
-                    person.setOsmPlaceName(address.getDisplayName());
-
-                    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
-                    Point point = geometryFactory.createPoint(new Coordinate(address.getLongitude(), address.getLatitude()));
-                    person.setOsmMapPoint(point);
-                }
+                GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+                Point point = geometryFactory.createPoint(new Coordinate(address.getLongitude(), address.getLatitude()));
+                person.setOsmMapPoint(point);
 
                 personService.createOrUpdatePerson(person);
 
@@ -107,19 +113,12 @@ public class SystemHandler implements UpdateHandler {
             case LIST:
                 return makeUserListMessage("Полный список участников:", personService.list());
 
-            case BYNAME:
+            case INFO:
                 if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
                     return "Должен быть параметр";
                 }
 
                 return makeUserListMessage("Найдено по имени:", personService.findByName(parsedCommand.getText()));
-
-            case BYPLACE:
-                if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
-                    return "Должен быть параметр";
-                }
-
-                return makeUserListMessage("Найдено по адресу::", personService.findByAddress(parsedCommand.getText()));
 
             case BYRANGE:
                 return makeUserListMessage("По увеличению расстояния:", personService.listByRange(message.getFrom().getId().longValue(), null));
@@ -158,8 +157,7 @@ public class SystemHandler implements UpdateHandler {
         text.append("[/help](/help) - show help message").append(END_LINE);
         text.append("/*from* _место_ - сохранить место откуда ты").append(END_LINE);
         text.append("/*list* - показать все записи откуда кто").append(END_LINE);
-        text.append("/*byname* _имя_ - поискать по имени").append(END_LINE);
-        text.append("/*byplace* _место_ - поискать по имени места из OSM").append(END_LINE);
+        text.append("/*info* _имя или место_ - поискать по имени или по месту").append(END_LINE);
         text.append("/*byrange* - список участников чата сортированных по расстоянию до вас (сперва близкие)").append(END_LINE);
 
         sendMessage.setText(text.toString());

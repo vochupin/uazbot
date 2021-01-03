@@ -92,8 +92,7 @@ public class MessageReciever {
             case ID:
             case FROM:
             case LIST:
-            case BYPLACE:
-            case BYNAME:
+            case INFO:
             case BYRANGE:
             case STICKER:
                 log.info("Handler for command[" + command.toString() + "] is: " + systemHandler);
