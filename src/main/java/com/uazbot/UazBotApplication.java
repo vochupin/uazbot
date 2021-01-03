@@ -1,7 +1,6 @@
 package com.uazbot;
 
 import com.uazbot.bot.Bot;
-import com.uazbot.restservice.AppConfig;
 import com.uazbot.service.PersonService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

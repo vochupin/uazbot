@@ -3,7 +3,6 @@ package com.uazbot;
 import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.command.Parser;
-import com.uazbot.restservice.AppConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.uazbot.service;
 
-import com.uazbot.restservice.AppConfig;
+import com.uazbot.AppConfig;
 import fr.dudie.nominatim.client.JsonNominatimClient;
 import fr.dudie.nominatim.model.Address;
 import org.apache.http.impl.client.CloseableHttpClient;

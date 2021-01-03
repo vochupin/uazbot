@@ -1,13 +1,9 @@
 package com.uazbot.bot;
 
-import com.uazbot.restservice.AppConfig;
+import com.uazbot.AppConfig;
 import com.uazbot.service.PersonService;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,9 +13,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
 public class Bot extends TelegramLongPollingBot {
