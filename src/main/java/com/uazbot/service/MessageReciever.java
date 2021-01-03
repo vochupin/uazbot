@@ -39,9 +39,23 @@ public class MessageReciever {
 
     @JmsListener(destination = "receiveHandler", containerFactory = "uazBotJmsListenerFactory")
     public void analyzeForUpdateType(Update update) {
+
+        if (update == null) {
+            log.error("Update is null!");
+            return;
+        }
+
         log.debug("Update recieved: " + update.toString());
 
         Message message = update.getMessage();
+        if (message == null) {
+            message = update.getEditedMessage();
+            if (message == null) {
+                log.warn("Update without message: " + update.toString());
+                return;
+            }
+        }
+
         Long chatId = message.getChatId();
 
         ParsedCommand parsedCommand = new ParsedCommand(Command.NONE, "");
