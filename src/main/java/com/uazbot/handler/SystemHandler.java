@@ -16,6 +16,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -47,6 +48,15 @@ public class SystemHandler implements UpdateHandler {
     public String operate(String chatId, ParsedCommand parsedCommand, Update update) {
         Command command = parsedCommand.getCommand();
 
+        Message message = update.getMessage();
+        if (message == null) {
+            message = update.getEditedMessage();
+            if (message == null) {
+                log.warn("Update without message: " + update.toString());
+                return "";
+            }
+        }
+
         switch (command) {
             case START:
                 bot.sendMessage(getMessageStart(chatId));
@@ -57,7 +67,7 @@ public class SystemHandler implements UpdateHandler {
                 break;
 
             case FROM:
-                User user = update.getMessage().getFrom();
+                User user = message.getFrom();
 
                 Optional<Person> optionalPerson = personService.getPersonById(user.getId().longValue());
                 Person person;
@@ -112,10 +122,10 @@ public class SystemHandler implements UpdateHandler {
                 return makeUserListString("Найдено по адресу::", personService.findByAddress(parsedCommand.getText()));
 
             case BYRANGE:
-                return makeUserListString("По увеличению расстояния:", personService.listByRange(update.getMessage().getFrom().getId().longValue(), null));
+                return makeUserListString("По увеличению расстояния:", personService.listByRange(message.getFrom().getId().longValue(), null));
 
             case ID:
-                return "Ваш telegramID: " + update.getMessage().getFrom().getId();
+                return "Ваш telegramID: " + message.getFrom().getId();
                 
             case STICKER:
                 return "StickerID: " + parsedCommand.getText();
