@@ -2,7 +2,6 @@ package com.uazbot;
 
 import com.uazbot.entity.Person;
 import com.uazbot.repository.PersonRepository;
-import com.uazbot.restservice.AppConfig;
 import com.uazbot.service.PersonService;
 import org.junit.Before;
 import org.junit.Test;

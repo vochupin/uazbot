@@ -4,7 +4,7 @@ import com.uazbot.bot.Bot;
 import com.uazbot.command.Command;
 import com.uazbot.command.ParsedCommand;
 import com.uazbot.entity.Person;
-import com.uazbot.restservice.AppConfig;
+import com.uazbot.AppConfig;
 import com.uazbot.service.NominatimService;
 import com.uazbot.service.PersonService;
 import fr.dudie.nominatim.model.Address;
@@ -95,24 +95,24 @@ public class SystemHandler implements UpdateHandler {
                 return "Запись по персоне создана(изменена): \n" + person.getLongDescription();
 
             case LIST:
-                return makeUserListString("Полный список участников:", personService.list());
+                return makeUserListMessage("Полный список участников:", personService.list());
 
             case BYNAME:
                 if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
                     return "Должен быть параметр";
                 }
 
-                return makeUserListString("Найдено по имени:", personService.findByName(parsedCommand.getText()));
+                return makeUserListMessage("Найдено по имени:", personService.findByName(parsedCommand.getText()));
 
             case BYPLACE:
                 if (parsedCommand.getText() == null || parsedCommand.getText().trim().isEmpty()) {
                     return "Должен быть параметр";
                 }
 
-                return makeUserListString("Найдено по адресу::", personService.findByAddress(parsedCommand.getText()));
+                return makeUserListMessage("Найдено по адресу::", personService.findByAddress(parsedCommand.getText()));
 
             case BYRANGE:
-                return makeUserListString("По увеличению расстояния:", personService.listByRange(update.getMessage().getFrom().getId().longValue(), null));
+                return makeUserListMessage("По увеличению расстояния:", personService.listByRange(update.getMessage().getFrom().getId().longValue(), null));
 
             case ID:
                 return "Ваш telegramID: " + update.getMessage().getFrom().getId();
@@ -123,16 +123,16 @@ public class SystemHandler implements UpdateHandler {
         return "";
     }
 
-    private String makeUserListString(String header, List<Person> persons) {
+    private String makeUserListMessage(String header, List<Person> persons) {
 
         if (persons == null || persons.isEmpty()) {
             return "Ничего не найдено.\n";
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(header).append("\n");
+        sb.append(header).append("\n\n");
         for (Person p : persons) {
-            sb.append("  ").append(p.getShortDescription()).append("\n");
+            sb.append(p.getShortDescription()).append("\n");
         }
         return sb.toString();
     }

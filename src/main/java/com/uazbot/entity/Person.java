@@ -1,6 +1,7 @@
 package com.uazbot.entity;
 import lombok.*;
 import org.locationtech.jts.geom.Point;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,34 @@ public class Person implements Serializable {
     private String text;
 
     public String getShortDescription() {
-        return firstName + " " + lastName + " [" + userName + "]: " + osmPlaceName;
+        StringBuilder sb =  new StringBuilder();
+        sb.append("*");
+        if (!StringUtils.isEmpty(firstName)) {
+            sb.append(firstName);
+        }
+
+        if (!StringUtils.isEmpty(lastName)) {
+            if (sb.length() != 1) {
+                sb.append(" ");
+            }
+            sb.append(lastName);
+        }
+
+        if (!StringUtils.isEmpty(userName)) {
+            if (sb.length() != 1) {
+                sb.append(" ");
+            }
+            sb.append("[").append(userName).append("]");
+        }
+        sb.append(":*\n");
+
+        if (!StringUtils.isEmpty(osmPlaceName)) {
+            for (String placeStr : osmPlaceName.split(",")) {
+                sb.append(placeStr.trim()).append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 
     public String getLongDescription() {

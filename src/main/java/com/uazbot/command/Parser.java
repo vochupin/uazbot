@@ -1,6 +1,6 @@
 package com.uazbot.command;
 
-import com.uazbot.restservice.AppConfig;
+import com.uazbot.AppConfig;
 import com.vdurmont.emoji.EmojiParser;
 import javafx.util.Pair;
 import org.apache.log4j.Logger;
