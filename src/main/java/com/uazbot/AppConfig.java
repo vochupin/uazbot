@@ -1,4 +1,4 @@
-package com.uazbot.restservice;
+package com.uazbot;
 
 import lombok.Getter;
 import lombok.Setter;
