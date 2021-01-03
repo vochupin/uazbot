@@ -118,7 +118,7 @@ public class SystemHandler implements UpdateHandler {
                     return "Должен быть параметр";
                 }
 
-                return makeUserListMessage("Найдено по имени:", personService.findByName(parsedCommand.getText()));
+                return makeUserListMessage("Найдено:", personService.findByName(parsedCommand.getText()));
 
             case BYRANGE:
                 return makeUserListMessage("По увеличению расстояния:", personService.listByRange(message.getFrom().getId().longValue(), null));
